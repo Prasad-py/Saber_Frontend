@@ -117,3 +117,36 @@ export const codeGen = async (purpose, language) => {
         return error.message
     }
 }
+
+export const askMeAnything = async (text) => {
+    const data = {
+        text
+    }
+    try {
+        const res = await axiosAuthInstance ({
+            url: "/api/ask-me-anything",
+            method:"post",
+            data: data
+        })
+        return res.data;
+        
+    } catch (error) {
+        return "Some Error Occurred"
+    }
+}
+
+export const paymentSuccessRedirect = async(session_id) => {
+    try {
+        const res = await axiosAuthInstance ({
+            url: "/api/paymentSuccessRedirect",
+            method:"post",
+            data: {
+                "session_id": session_id
+            }
+        })
+        return res.data;
+        
+    } catch (error) {
+        return "Some Error Occurred"
+    }
+}

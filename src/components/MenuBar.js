@@ -86,7 +86,7 @@ const MenuBar = ()  => {
               </DropdownMenu>
             </UncontrolledDropdown>
             <NavItem>
-              <NavLink className={`toolbar-comp-${mode}`} href="/ask--me-anything">
+              <NavLink className={`toolbar-comp-${mode}`} href="/ask-me-anything">
                 Ask me Anything
               </NavLink>
             </NavItem>

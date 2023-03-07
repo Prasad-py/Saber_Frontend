@@ -16,6 +16,8 @@ import Login from './pages/Login';
 import PrivateRoute from './components/PrivateRoute';
 import Otp from './pages/Otp';
 import MenuBar from './components/MenuBar';
+import PaymentSuccessRedirect from './pages/PaymentSuccessRedirect';
+import AskMeAnything from './pages/AskMeAnything';
 
 function App() {
   const [mode, setMode] = useState ("")
@@ -34,6 +36,8 @@ function App() {
         <Route exact path="/code-gen" element={<PrivateRoute><CodeGen /></PrivateRoute>} />
         <Route exact path="/code-debug" element={<PrivateRoute><CodeDebug /></PrivateRoute>} />
         <Route exact path="/manage-account" element={<PrivateRoute><Profile /></PrivateRoute>} />
+        <Route exact path="/ask-me-anything" element={<PrivateRoute><AskMeAnything /></PrivateRoute>} />
+        <Route exact path="/paymentSuccessRedirect" element={<PrivateRoute><PaymentSuccessRedirect /></PrivateRoute>} />
         <Route exact path="/payments" element={<Payments />} />
         <Route exact path="/otp" element={<Otp />} />
         <Route exact path="/sign-up" element={<SignUp />} />
