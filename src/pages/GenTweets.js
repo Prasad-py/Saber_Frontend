@@ -27,6 +27,7 @@ class GenTweets extends React.Component {
             const { tweet } = this.state
             this.setState ({isLoading: true})
             const res = await tweetGen(tweet)
+            console.log(res)
             if (res.error) {
                 this.setState({ alert: res.error })
                 setTimeout(() => this.setState({ alert: "" }), 3000)

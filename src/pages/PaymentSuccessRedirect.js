@@ -9,10 +9,18 @@ const PaymentSuccessRedirect = ()=> {
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(window.location.search)
     const sessionId = queryParams.get("session_id")
-    console.log(`SESSION ID ============= ${sessionId}`);
-    useEffect(async()=>{
-        const res = await paymentSuccessRedirect(sessionId)
-        if(!res.error) navigate("/")
+    useEffect(()=>{
+
+        async function paymentSuccess(){
+            const res = await paymentSuccessRedirect(sessionId)
+            if(!res.error) {
+                alert("Payment Successfull!!")
+                navigate("/")
+            }else{
+                navigate("/")
+            }
+        }
+        paymentSuccess();
     },[]);
     
     return (

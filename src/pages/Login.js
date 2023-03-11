@@ -4,12 +4,15 @@ import { Card, Button} from "ui-neumorphism";
 import { login } from "../backend-calls/authentication";
 import "../styles/ServicePage.css";
 import Logo from '../assets/saber-logo.png';
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ToastCustomContainer from './../components/ToastCustomContainer';
 
 const Login = () => {
     const [email, setEmail] = useState ("")
     const [password, setPassword] = useState ("")
     const [mode, setMode] = useState ("")
+
     const navigate = useNavigate ()
 
     useEffect (() => {
@@ -24,16 +27,26 @@ const Login = () => {
         }
         const loginCall = async() => {
             const response = await login(email, password)
-            console.log(response.data);
-            localStorage.setItem("token", response.data)
-            navigate("/")
+            console.log(response);
+            if(response.error){
+                toast.error(response.msg)
+            }else{
+                toast.success(response.msg)
+                setTimeout(() => {
+                    localStorage.setItem("token", response.data)
+                    navigate("/")
+                },2500)
+            }
         }
-        return (
+        return !localStorage.getItem("token") ? (
             <div style={{paddingTop:"5rem", height:"100vh"}}>
+                <ToastCustomContainer                    
+                />
                 <div style={{display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none"}}>
                     <img src={Logo} alt="saber-ai" className='logo-image card' />
                     <div className='logo-name'>SABER AI</div>
                 </div>
+                
                 <div className="page-heading">
                     LOGIN TO YOUR ACCOUNT
                 </div>
@@ -52,7 +65,7 @@ const Login = () => {
                     </Card>
                 </div>
             </div>
-        )
+        ) : <Navigate to="/" />
 }
 
 export default Login

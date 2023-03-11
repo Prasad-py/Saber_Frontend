@@ -4,18 +4,29 @@ import { plans, services, usage, pricing, integration, description } from "../da
 import { Divider, Card } from "ui-neumorphism";
 import { Button } from "reactstrap";
 import PaymentsPart from "../components/PaymentsPart";
-import {CardElement, Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
 import { axiosAuthInstance } from "../backend-calls/axiosInstance";
-import CheckoutForm from "./CheckoutForm";
+import userContext from "../context/user";
+import { useContext } from "react";
 
-const stripePromise = loadStripe('pk_live_51McJ30SCDuNL0Movi3X6euihrTLlcbKsfQGyImf1XUvusXBdslBUDnLkt9EmGcWuVGMehD8aVDNrYHYgzKVkzQhc00LbxbmLet');
 
 const Payments = () => {
     const [mode, setMode] = useState ("")
-    // useEffect (() => {
-    //     setMode(localStorage.getItem("mode"))
-    // }, [])
+    const {userData} = useContext(userContext)
+
+    useEffect (() => {
+        setMode(localStorage.getItem("mode"))
+    }, [])
+
+    const onSubscribe = async (planName) => {
+        const res = await axiosAuthInstance.post('api/payment',{
+            "planName" : planName
+          });
+          if(res.data.error){
+            alert("Something went wrong!!")
+          }else{
+            window.location.href = res.data.data.url
+          }
+    }
 
         return (
             <div style={{marginBottom:"3rem"}}>
@@ -66,26 +77,29 @@ const Payments = () => {
                         </div>
                     </div>
                     <div style={{width:"25%"}}>
-                        <Elements stripe={stripePromise} >
-                            <CheckoutForm />
-                        </Elements>
-                        <div style={{display:"flex", justifyContent:"center"}}>
-                            <Button style={{fontSize:"0.75rem"}}>
-                                TRY FOR 1 MONTH
-                            </Button>
-                        </div>
-                    </div>
-                    <div style={{width:"25%"}}>
-                        <div style={{display:"flex", justifyContent:"center"}}>
-                            <Button style={{fontSize:"1.25rem"}} color="danger">
+                        {userData.planName !== "Starter Plan" && <div style={{display:"flex", justifyContent:"center"}}>
+                            <Button style={{fontSize:"1.25rem"}} color="danger" onClick={() => onSubscribe("Starter Plan")}>
                                 SUBSCRIBE
                             </Button>
-                        </div> <br />
-                        <div style={{display:"flex", justifyContent:"center"}}>
-                            <Button style={{fontSize:"0.75rem"}}>
+                        </div>} <br />
+                        {userData.planName !== "Starter Plan One Time" && <div style={{display:"flex", justifyContent:"center"}}>
+                            <Button style={{fontSize:"0.75rem"}} onClick={() => onSubscribe("Starter Plan One Time")}>
                                 TRY FOR 1 MONTH
                             </Button>
-                        </div>
+                        </div>}
+                    </div>
+                    <div style={{width:"25%"}}>
+                        {userData.planName !== "Premium Plan" && <div style={{display:"flex", justifyContent:"center"}}>
+                            <Button style={{fontSize:"1.25rem"}} color="danger" onClick={() => onSubscribe("Premium Plan")}>
+                                SUBSCRIBE
+                            </Button>
+                        </div> }
+                        <br />
+                        {userData.planName !== "Premium Plan One Time" && <div style={{display:"flex", justifyContent:"center"}}>
+                            <Button style={{fontSize:"0.75rem"}} onClick={() => onSubscribe("Premium Plan One Time")}>
+                                TRY FOR 1 MONTH
+                            </Button>
+                        </div>}
                     </div>
                 </div>
             </div>
