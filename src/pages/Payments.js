@@ -77,25 +77,25 @@ const Payments = () => {
                         </div>
                     </div>
                     <div style={{width:"25%"}}>
-                        {userData.planName !== "Starter Plan" && <div style={{display:"flex", justifyContent:"center"}}>
+                        {userData?.planName !== "Starter Plan" && <div style={{display:"flex", justifyContent:"center"}}>
                             <Button style={{fontSize:"1.25rem"}} color="danger" onClick={() => onSubscribe("Starter Plan")}>
                                 SUBSCRIBE
                             </Button>
                         </div>} <br />
-                        {userData.planName !== "Starter Plan One Time" && <div style={{display:"flex", justifyContent:"center"}}>
+                        {userData?.planName !== "Starter Plan One Time" && <div style={{display:"flex", justifyContent:"center"}}>
                             <Button style={{fontSize:"0.75rem"}} onClick={() => onSubscribe("Starter Plan One Time")}>
                                 TRY FOR 1 MONTH
                             </Button>
                         </div>}
                     </div>
                     <div style={{width:"25%"}}>
-                        {userData.planName !== "Premium Plan" && <div style={{display:"flex", justifyContent:"center"}}>
+                        {userData?.planName !== "Premium Plan" && <div style={{display:"flex", justifyContent:"center"}}>
                             <Button style={{fontSize:"1.25rem"}} color="danger" onClick={() => onSubscribe("Premium Plan")}>
                                 SUBSCRIBE
                             </Button>
                         </div> }
                         <br />
-                        {userData.planName !== "Premium Plan One Time" && <div style={{display:"flex", justifyContent:"center"}}>
+                        {userData?.planName !== "Premium Plan One Time" && <div style={{display:"flex", justifyContent:"center"}}>
                             <Button style={{fontSize:"0.75rem"}} onClick={() => onSubscribe("Premium Plan One Time")}>
                                 TRY FOR 1 MONTH
                             </Button>

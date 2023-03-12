@@ -91,7 +91,7 @@ const MenuBar = ()  => {
               </NavLink>
             </NavItem>
           </Nav>
-          {userData.planName === "Free Plan" && <NavLink className={`toolbar-comp-${mode}`} href="/payments">
+          {userData?.planName === "Free Plan" && <NavLink className={`toolbar-comp-${mode}`} href="/payments">
             UPGRADE TO PRO
           </NavLink>}
           {localStorage.getItem("token") ? 
