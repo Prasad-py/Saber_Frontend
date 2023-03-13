@@ -14,27 +14,31 @@ import {
 } from 'reactstrap';
 import "../styles/Toolbar.css";
 import Logo from '../assets/saber-logo.png';
-import { useCookies } from 'react-cookie';
 import { logOut } from '../backend-calls/authentication';
 import { useNavigate } from 'react-router-dom';
+import ToastCustomContainer from './ToastCustomContainer';
+import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import userContext from '../context/user';
 
 const MenuBar = ()  => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDown, setDropDown] = useState (false);
   const [isDropDown1, setDropDown1] = useState (false);
-  const [cookies, setCookie]= useCookies()
   const navigate = useNavigate ()
   const toggle = () => setIsOpen(!isOpen);
   const [mode, setMode] = useState ("")
+  const {userData} = useContext(userContext);
+
   useEffect (() => {
     setMode (localStorage.getItem("mode")) 
   }, [])
   const submitLogout = () => {
-    const res = logOut ()
-    res.then((result) => {
-      console.log(result)
-    }).catch (err => console.log(err.message))
-    navigate ("/login")
+    localStorage.removeItem("token")
+    toast.success("Log Out successfull!!")
+    setTimeout(() => {
+      navigate ("/login")
+    },2500)
   }
   const changeDropDown = () => {
     setDropDown(true)
@@ -59,6 +63,7 @@ const MenuBar = ()  => {
   return (
     <div>
       <Navbar className={`box-shadow-${mode}`} expand ="sm" >
+        <ToastCustomContainer />
         <NavbarBrand href="/" style={{display:"flex", alignItems:"center", justifyContent:"center", textDecoration:"none"}}>
             <img src={Logo} alt="saber-ai" className={`logo-image card-${mode}`} />
             <div className={`logo-name-${mode}`}>SABER AI</div>
@@ -66,11 +71,6 @@ const MenuBar = ()  => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
-            <NavItem>
-              <NavLink className={`toolbar-comp-${mode}`} href="/">
-                Home
-              </NavLink>
-            </NavItem>
             <UncontrolledDropdown onMouseOut={changeDropDownClose} onMouseOver={changeDropDown} nav inNavbar>
               <DropdownToggle className={`toolbar-comp-${mode}`}  nav caret>
                 Services
@@ -86,15 +86,15 @@ const MenuBar = ()  => {
               </DropdownMenu>
             </UncontrolledDropdown>
             <NavItem>
-              <NavLink className={`toolbar-comp-${mode}`} href="/ask--me-anything">
+              <NavLink className={`toolbar-comp-${mode}`} href="/ask-me-anything">
                 Ask me Anything
               </NavLink>
             </NavItem>
           </Nav>
-          <NavLink className={`toolbar-comp-${mode}`} href="/payments">
+          {userData?.planName === "Free Plan" && <NavLink className={`toolbar-comp-${mode}`} href="/payments">
             UPGRADE TO PRO
-          </NavLink>
-          {cookies.user ? 
+          </NavLink>}
+          {localStorage.getItem("token") ? 
           <UncontrolledDropdown onMouseOut={changeDropDownClose1} onMouseOver={changeDropDown1}>
               <DropdownToggle className={`toolbar-comp-${mode}`} nav caret>
                 Profile

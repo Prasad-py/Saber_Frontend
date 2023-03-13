@@ -1,14 +1,14 @@
 import React from "react";
 import { Input, Spinner } from "reactstrap";
 import { Button, Tooltip, Alert } from "ui-neumorphism";
-import { tweetGen } from "../backend-calls/services";
+import { askMeAnything } from "../backend-calls/services";
 import "../styles/ServicePage.css";
 
-class GenTweets extends React.Component {
+class AskMeAnything extends React.Component {
     constructor() {
         super()
         this.state = {
-            tweet: "",
+            text: "",
             reply: "",
             mode: "",
             isLoading: false,
@@ -23,11 +23,10 @@ class GenTweets extends React.Component {
             const { name, value } = event.target
             this.setState({ [name]: value })
         }
-        const submitTweet = async () => {
-            const { tweet } = this.state
+        const submitAskMeAnything = async () => {
+            const { text } = this.state
             this.setState ({isLoading: true})
-            const res = await tweetGen(tweet)
-            console.log(res)
+            const res = await askMeAnything(text)
             if (res.error) {
                 this.setState({ alert: res.error })
                 setTimeout(() => this.setState({ alert: "" }), 3000)
@@ -41,9 +40,8 @@ class GenTweets extends React.Component {
         return (
             <div>
                 <div className="page-heading">
-                    <Tooltip dark={this.state.mode === "dark" ? true : false} bottom content={<div>Start generating tweet ideas with hashtags for your online social media campaigns on twitter.
-                        Create endless unique tweet ideas, no more writers block.</div>}>
-                        <b>GENERATE TWEETS</b>
+                    <Tooltip dark={this.state.mode === "dark" ? true : false} bottom content={<div>Generate what's on your mind!</div>}>
+                        <b>Ask Me Anything</b>
                     </Tooltip>
                 </div>
                 <div style={{ margin: "auto", width: "max-content" }}>
@@ -54,17 +52,16 @@ class GenTweets extends React.Component {
                 </div>
                 <div className="page-container">
                     <div className={`page-card card-${this.state.mode}`}>
-                        <div className="page-card-heading"><b>What Is Your Tweet About?</b></div>
-                        <div className="page-card-label">Tweet Prompt</div>
-                        <Input className={`input-${this.state.mode}`} style={{ height: "12rem" }} placeholder="eg. CRM Software" onChange={onChange} value={this.state.tweet} name="tweet" type="textarea" />
-                        <div>Enter topic or subject you would like to generate tweets for.</div>
-                        <Button dark={this.state.mode === "dark" ? true : false} onClick={submitTweet} style={{ marginTop: "1rem", width: "100%" }}>
-                        {this.state.isLoading ? <Spinner /> : "Get Recommendations"}
+                        <div className="page-card-heading"><b>What do you want to ask?</b></div>
+                        <div className="page-card-label">Text</div>
+                        <Input className={`input-${this.state.mode}`} style={{ height: "12rem" }} placeholder="eg. how to make maggie" onChange={onChange} value={this.state.text} name="text" type="textarea" />
+                        <Button dark={this.state.mode === "dark" ? true : false} onClick={submitAskMeAnything} style={{ marginTop: "1rem", width: "100%" }}>
+                        {this.state.isLoading ? <Spinner /> : "Get your answer here"}
                         </Button>
                     </div>
                     <div className={`page-card card-${this.state.mode}`}>
-                        <div className="page-card-heading"><b>See The Tweet Here:</b></div>
-                        <div className="page-card-label">Generated Tweet</div>
+                        <div className="page-card-heading"><b>See The Answer here:</b></div>
+                        <div className="page-card-label">Generated answer</div>
                         <Input className={`input-${this.state.mode}`} style={{ height: "30rem" }} value={this.state.reply} type="textarea" />
                         <Button dark={this.state.mode === "dark" ? true : false} onClick={copyToClipBoard} style={{ marginTop: "1rem" }}>
                             Copy
@@ -76,4 +73,4 @@ class GenTweets extends React.Component {
     }
 }
 
-export default GenTweets
+export default AskMeAnything
